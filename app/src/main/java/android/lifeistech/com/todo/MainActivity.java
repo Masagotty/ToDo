@@ -30,8 +30,13 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayAdapter adapter = (ArrayAdapter)listView.getAdapter();
                 String item = (String)adapter.getItem(position);
-                adapter.remove(item);
-                adapter.add(item);
+                if (adapter.getItem(position + 1) != null) {
+                    adapter.insert(item, position + 2);
+                    adapter.remove(item);
+                } else {
+                    Toast.makeText(getApplicationContext(), "入れ替えるアイテムがありません", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -40,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String item = (String)adapter.getItem(position);
+                Toast.makeText(getApplicationContext(), item + "を削除しました", Toast.LENGTH_SHORT).show();
                 adapter.remove(item);
 
                 return false;
@@ -51,8 +57,9 @@ public class MainActivity extends AppCompatActivity {
     public void add (View v) {
         String text;
         text = editText.getText().toString();
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, text + "を追加しました", Toast.LENGTH_SHORT).show();
 
         adapter.add(text);
+        editText.setText(null);
     }
 }
